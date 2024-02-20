@@ -7,6 +7,12 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+<!--script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-firestore.js"></script-->
+
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 
@@ -39,6 +45,7 @@ body, html {
     <div class="w3-right w3-hide-small">
       <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
       <a href="#courses" class="w3-bar-item w3-button"><i class="fa fa-th"></i> COURSES</a>
+      <a href="#qa" class="w3-bar-item w3-button"><i class="fa fa-question"></i> Q&A</a>
       <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
     </div>
     <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -50,20 +57,23 @@ body, html {
 </div>
 
 <!-- Sidebar on small screens when clicking the menu icon -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+<nav class="w3-sidebar w3-bar-block w3-light w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
   <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
   <a href="#courses" onclick="w3_close()" class="w3-bar-item w3-button">COURSES</a>
+  <a href="#qa" onclick="w3_close()" class="w3-bar-item w3-button">Q&A</a>
   <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
 </nav>
 
 <!-- Header with full-height image -->
 <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  <div class="w3-display-left w3-text-white" style="padding:48px;background: #493c36ed;">
-    <span class="w3-jumbo w3-hide-small">Achieve with the Right Mentorship</span><br>
-    <span class="w3-xxlarge w3-hide-large w3-hide-medium">Achieve with the Right Mentorship</span><br>
-    <span class="w3-large">Invest your time in acquiring a skill set that puts you on a pedestal with the luxury of choosing international IT jobs.</span>
-    <p><a href="#about" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn more and start today</a></p>
+  <div class="w3-display-left w3-text-brown" style="padding:8px 48px 16px 24px;background: #ffffffef;">
+    <span class="w3-jumbo w3-hide-small">The Right Mentorship</span><br>
+    <span class="w3-xlarge w3-hide-large w3-hide-medium">The Right Mentorship</span><br>
+    <span class="w3-xlarge w3-hide-small">Invest your time in acquiring skills that sets you on a Global stage.</span>
+    <span class="w3-medium w3-hide-large w3-hide-medium">Invest your time in acquiring skills that sets you on a Global stage.</span>
+    <p class="w3-hide-small"><a href="#about" class="w3-button w3-brown w3-padding-large w3-xlarge w3-margin-top w3-opacity w3-hover-opacity-off">Learn more</a></p>
+    <p class="w3-hide-large w3-hide-medium"><a href="#about" class="w3-button w3-brown w3-padding-medium w3-margin-top w3-opacity w3-hover-opacity-off">Learn more</a></p>
   </div> 
   <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
     <!--i class="fa fa-facebook-official w3-hover-opacity"></i>
@@ -81,9 +91,9 @@ body, html {
   <p class="w3-center w3-large">Our Key role is:</p>
   <div class="w3-row-padding w3-center" style="margin-top:64px">
     <div>
-        <image src="mentorship.png" style="height:150px;margin:2px">
+        <image src="mentorship.png" style="height:100px;margin:2px">
       <p class="w3-large">Mentorship</p>
-      <p>Attaining <strong>Global IT Certifications</strong> <em>- A New Vista & Gateway to International Job Mobility.</em></p>
+      <p>Attaining <strong>Global Data and Business Analyst Certifications</strong> <em>- A New Vista & Gateway to International Job Mobility.</em></p>
     </div>
   </div>
 </div>
@@ -93,7 +103,7 @@ body, html {
   <div class="w3-row-padding">
     <div class="w3-col m6">
       <h3>Our Goal</h3>
-      <p>Providing mentorship on Certificate courses in Data and Business Analysis with huge job potentials.</p>
+      <p>As Global businesses inch towards Artificial Intelligence and a data-driven environment, it's about time the workforce stay in tune with the essentials of data and business analysis so as to deliver up-to-date intelligence, that will shape business decisions.</p>
       <!--p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> View Our Works</a></p-->
     </div>
     <!--div class="w3-col m6">
@@ -102,18 +112,7 @@ body, html {
   </div>
   <div class="w3-row-padding">
     <div class="w3-col m6">
-      <h3>Who is a Data Analyst?</h3>
-      <p>Anyone who uses 1 - 4, in analysing and interpreting data.</p>
-      <!--p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> View Our Works</a></p-->
-    </div>
-    <!--div class="w3-col m6">
-      <img class="w3-image w3-round-large" src="/w3images/phone_buildings.jpg" alt="Buildings" width="700" height="394">
-    </div-->
-  </div>
-  <div class="w3-row-padding">
-    <div class="w3-col m6">
-      <h3>Who is a Business Analyst?</h3>
-      <p>Anyone who uses 1 - 6, in analysing and interpreting data.</p>
+      <p>Our goal is providing support and mentoring towards achieving Data and Business Analyst Certifications with huge job potentials.</p>
       <!--p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> View Our Works</a></p-->
     </div>
     <!--div class="w3-col m6">
@@ -167,7 +166,7 @@ body, html {
     <div class="w3-row-padding">
       <div class="w3-col m6">
         <h3>First Step</h3>
-        <p>Study at your own pace with videos on demand.<br><strong>Caution: </strong>Please do not be luggish. You should complete all 6 courses in 12 months or less.</p>
+        <p>Study at your own pace with videos on demand.</p>
         <h4>What you get:</h4>
         <ol>
             <li>Certificates</li>
@@ -200,6 +199,27 @@ body, html {
     </div>
   </div>
 
+<!-- Pricing Section -->
+<div class="w3-container w3-dark-grey" style="padding:128px 32px" id="qa">
+  <h3 class="w3-center">Q & A</h3>
+  <p><strong>Q.</strong> Who is a Business Analyst?</p>
+  <p><strong>Ans.</strong> A Business Analyst is a person who processes, interprets and documents business processes, products, services and software through analysis of data.</p>
+  <br>
+  <p><strong>Q.</strong> What does a Data Analyst do?</p>
+  <p><strong>A.</strong> Collect, clean, study and interpret data sets in order to answer a question or solve a problem.</p>  
+  <br>
+  <p><strong>Q.</strong> Is this for only those who have studied subjects related to IT or Computer?</p>
+  <p><strong>A.</strong> No. Everything, just everything we know now, we learned them. We’ve all got the potential. Our Brain never gets full and you don’t need to delete any file for a lack of storage.</p>
+  <br>
+  <p><strong>Q.</strong> Can I become a data analyst without a degree?</p>
+  <p><strong>A.</strong> It is not always necessary to have a degree to get hired as a data analyst. Data analysts are in demand, and employers want to know that you have the skills to do the job. If you don't have a degree, focus on making your portfolio shine with your best.</p>
+  <br>
+  <p><strong>Q.</strong> Can I become a business analyst with no experience?</p>
+  <p><strong>A.</strong> Include transferable skills. Even if you don't have direct experience in business analysis, you likely have transferable skills that can be applied to the role. Keywords like problem-solving, project management, and communication are all valuable skills for a business analyst.</p>
+  <br>
+</div>
+
+
 <!-- Contact Section -->
 <div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
   <h3 class="w3-center">CONTACT</h3>
@@ -231,6 +251,40 @@ body, html {
 </footer>
  
 <script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAH4KK0hIftsJZkMR1Hx6swzLmBCl42obM",
+    authDomain: "analystbootcamp-e3060.firebaseapp.com",
+    projectId: "analystbootcamp-e3060",
+    storageBucket: "analystbootcamp-e3060.appspot.com",
+    messagingSenderId: "810457809555",
+    appId: "1:810457809555:web:8852ef86567e75f5bdc366",
+    measurementId: "G-NJ93YCRFKR"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  // Reference to Firestore
+  const db = firebase.firestore();
+
+  // Example: Add data to Firestore
+  function sendDataToFirestore() {
+    const data = {
+      name: "John Doe",
+      email: "john@example.com",
+      message: "Hello, Firebase!"
+    };
+
+    // Add a document with auto-generated ID
+    db.collection("messages").add(data)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  }
+
 // Modal Image Gallery
 function onClick(element) {
   document.getElementById("img01").src = element.src;
