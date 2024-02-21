@@ -11,7 +11,10 @@ import {
 
 import { 
     getAuth,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    signOut, signInWithEmailAndPassword,
+    onAuthStateChanged,
+    sendEmailVerification 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,27 +42,27 @@ const auth = getAuth()
 // collection ref
 const colRef = collection(db, 'users')
 
+/*
 const q = query(colRef, orderBy('createdAt'))
 
-onSnapshot(colRef, (snapshot) => {
+const unsubCol = onSnapshot(q, (snapshot) => {
     let users = []
     snapshot.docs.forEach((doc) => {
       users.push({ ...doc.data(), id:doc.id })
     })
     console.log(users)
-})
+})*/
 
-async function checkUsername(username) {
+async function checkUsername(email) {
     // get collection data
     // queries
-    const q = query(colRef, where("username", "==", username))
+    const q = query(colRef, where("email", "==", email))
     const snapshot = await getDocs(q)
     let users = []
     snapshot.docs.forEach((doc) => {
-        users.push({ ...doc.data() }.username)
+        users.push({ ...doc.data() }.email)
     })
-    console.log(users, username)
-    if (users.includes(username)) {
+    if (users.includes(email)) {
         return true
     } else {
         return false
@@ -91,15 +94,80 @@ async function updateProperties(id, properties) {
 }
 
 //updateProperties(, {"username":"new", "access":"admin"})
-  
-  loginButton.addEventListener("click", async (e) => {
+
+const logOutButton1 = document.querySelector('#logOut-1')
+logOutButton1.addEventListener('click', () => {
+    signOut(auth)
+        .then(() => {
+            //console.log('the user is signed out')
+        })
+        .catch((err) => {
+            console.log(err.message)
+        })
+})
+
+const logOutButton2 = document.querySelector('#logOut-2')
+logOutButton2.addEventListener('click', () => {
+    signOut(auth)
+        .then(() => {
+            //console.log('the user is signed out')
+            goBack()
+        })
+        .catch((err) => {
+            console.log(err.message)
+        })
+})
+
+loginButton.addEventListener("click", async (e) => {
     e.preventDefault();
     const username = loginForm.username.value;
     const password = loginForm.password.value;
+    loginErrorMsg.innerHTML = ""
 
     if (loginForm.confirmPassword.style.display == "") {
-        const existingUser = await checkUsername(username.toLowerCase())
         if (
+            loginForm.password.value !== loginForm.confirmPassword.value
+            ) {
+            loginErrorMsg.innerHTML = "Password does not match.";
+            loginErrorMsg.style.opacity = 1
+            return
+        }
+        createUserWithEmailAndPassword(auth, username, password)
+            .then((cred) => {
+                //console.log('user created:', cred.user)
+                //console.log("You have successfully logged in.");
+                //document.getElementById("securityQuestions").style.display = "none";
+                loginForm.reset()
+                loginForm.confirmPassword.style.display = "none";
+                
+                logged = true;
+                
+                loginErrorMsg.style.opacity = 0;
+                goBack()
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        // Email verification sent!
+                        // ...
+                    });
+            })
+            .catch((err) => {
+                console.log(err.message)
+                if (err.message == 'Firebase: Error (auth/invalid-email).') {
+                    loginErrorMsg.innerHTML = "Invalid email."
+                    loginErrorMsg.style.opacity = 1
+                } else if (err.message == 'Firebase: Error (auth/missing-password).') {
+                    loginErrorMsg.innerHTML = "Enter password."
+                    loginErrorMsg.style.opacity = 1
+                } else if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
+                    loginErrorMsg.innerHTML = "Email already in use."
+                    loginErrorMsg.style.opacity = 1
+                } else if (err.message == 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
+                    oginErrorMsg.innerHTML = "Password should be at least 6 characters"
+                    loginErrorMsg.style.opacity = 1
+                }
+            })
+        //const existingUser = await checkUsername(username.toLowerCase())
+        /*if (
             "" == username ||
             " " == username ||
             username.includes(" ")
@@ -122,26 +190,30 @@ async function updateProperties(id, properties) {
             ) {
             loginErrorMsg.innerHTML = "Password is not the same.";
             loginErrorMsg.style.opacity = 1
-        } else if (
-            "No option selected" ==
-            getSelectedOption(document.getElementsByName("securityGroup"))
-        ) {
-            loginErrorMsg.innerHTML = "Please select a question.";
-            loginErrorMsg.style.opacity = 1
-        } else if (
-            "" == document.querySelector("#answer").value.toLowerCase()
-        ) {
-            loginErrorMsg.innerHTML = "Please enter a valid answer.";
-            loginErrorMsg.style.opacity = 1
         } else {
 
             createUserWithEmailAndPassword(auth, username, password)
                 .then((cred) => {
                     console.log('user created:', cred.user)
+                    document.querySelector(".login").innerHTML = '<i class="fa fa-sign-out"></i> SIGN OUT'
+                    document.querySelector(".login-2").innerHTML = 'SIGN OUT'
+                    console.log("You have successfully logged in.");
+                    //document.getElementById("securityQuestions").style.display = "none";
+                    loginForm.reset()
+                    loginForm.confirmPassword.style.display = "none";
+                    
+                    logged = true;
+                    
+                    loginErrorMsg.style.opacity = 0;
+                    goBack()
                 })
                 .catch((err) => {
                     console.log(err.message)
-                })
+                    if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
+                        loginErrorMsg.innerHTML = "Email already in use."
+                        loginErrorMsg.style.opacity = 1
+                    }
+                })*/
             /*
             addDoc(colRef, {
                 username: username.toLowerCase(),
@@ -160,10 +232,39 @@ async function updateProperties(id, properties) {
                 
                 loginErrorMsg.style.opacity = 0;
                 goBack()
-            })*/
-        }
+            })
+        }*/
     } else {
-        const existingUser = await checkSignIn(username.toLowerCase(), password)
+        signInWithEmailAndPassword(auth, username, password)
+            .then((cred) => {
+                //console.log('user logged in:', cred.user)
+                //document.getElementById("securityQuestions").style.display = "none";
+                loginForm.reset()
+                loginForm.confirmPassword.style.display = "none";
+                
+                logged = true;
+                
+                loginErrorMsg.style.opacity = 0;
+                goBack()
+            })
+            .catch((err) => {
+                console.log(err.message)
+                if (err.message == 'Firebase: Error (auth/invalid-credential).') {
+                    loginErrorMsg.innerHTML = "Invalid credential."
+                    loginErrorMsg.style.opacity = 1
+                }/* else if (err.message == 'Firebase: Error (auth/missing-password).') {
+                    loginErrorMsg.innerHTML = "Enter password."
+                    loginErrorMsg.style.opacity = 1
+                } else if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
+                    loginErrorMsg.innerHTML = "Email already in use."
+                    loginErrorMsg.style.opacity = 1
+                } else if (err.message == 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
+                    oginErrorMsg.innerHTML = "Password should be at least 6 characters"
+                    loginErrorMsg.style.opacity = 1
+                }*/
+            })
+        /*
+            const existingUser = await checkSignIn(username.toLowerCase(), password)
         if (
             existingUser
         ) {
@@ -174,6 +275,46 @@ async function updateProperties(id, properties) {
             
             loginErrorMsg.style.opacity = 0;
             goBack()
-        }
+        }*/
     }
   });
+
+  const unsubAuth = onAuthStateChanged(auth, async (user) => {
+    console.log('user status changed:', user)
+    if (user !== null) {
+        document.querySelector("#logIn-1").style.display = 'none'
+        document.querySelector("#logIn-2").style.display = 'none'
+        document.querySelector("#logOut-1").style.display = ''
+        document.querySelector("#logOut-2").style.display = ''
+    } else {
+        document.querySelector("#logIn-1").style.display = ''
+        document.querySelector("#logIn-2").style.display = ''
+        document.querySelector("#logOut-1").style.display = 'none'
+        document.querySelector("#logOut-2").style.display = 'none'
+    }
+    if (user !== null && user.emailVerified) {
+        const varified = await checkUsername(user.email)
+        if (!varified) {
+            addDoc(colRef, {
+                email: user.email,
+                access: "default",
+                createdAt: serverTimestamp()
+            })
+            .then(() => {
+                console.log("Verified user successfully.");
+            })
+        } else {
+            const q = query(colRef, where("email", "==", user.email))
+            const unsubCol = onSnapshot(q, (snapshot) => {
+                let users = []
+                snapshot.docs.forEach((doc) => {
+                  users.push({ ...doc.data(), id:doc.id })
+                })
+                console.log(users)
+                if (users[0].access == 'admin') {
+                    console.log('Administrator')
+                }
+            })
+        }
+    }
+  })
