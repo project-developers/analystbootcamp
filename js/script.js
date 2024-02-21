@@ -297,6 +297,22 @@ loginButton.addEventListener("click", async (e) => {
 
   const unsubAuth = onAuthStateChanged(auth, async (user) => {
     console.log('user status changed:', user)
+    // Get the currently signed-in user
+    const user1 = auth.currentUser;
+
+    if (user1) {
+    // User is signed in
+    const displayName = user.displayName;
+
+    if (displayName) {
+        console.log("User's display name:", displayName);
+    } else {
+        console.log("User does not have a display name.");
+    }
+    } else {
+    // No user is signed in
+    console.log("No user is signed in.");
+    }
     if (user !== null) {
         document.querySelector("#logIn-1").style.display = 'none'
         document.querySelector("#logIn-2").style.display = 'none'
