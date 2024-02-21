@@ -30,7 +30,8 @@
       <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
       <a href="#courses" class="w3-bar-item w3-button"><i class="fa fa-th"></i> COURSES</a>
       <a href="#qa" class="w3-bar-item w3-button"><i class="fa fa-question"></i> Q & A</a>
-      <a href="javascript:void(0)" onclick="signIn()" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> LOGIN</a>
+      <a href="javascript:void(0)" id="logIn-1" onclick="signIn()" class="w3-bar-item w3-button"><i class="fa fa-sign-in"></i> LOGIN</a>
+      <a href="javascript:void(0)" id="logOut-1" class="w3-bar-item w3-button" style="display:none"><i class="fa fa-sign-out"></i> SIGN OUT</a>
     </div>
     <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
@@ -46,7 +47,8 @@
   <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
   <a href="#courses" onclick="w3_close()" class="w3-bar-item w3-button">COURSES</a>
   <a href="#qa" onclick="w3_close()" class="w3-bar-item w3-button">Q & A</a>
-  <a href="javascript:void(0)" onclick="signIn()" class="w3-bar-item w3-button">LOGIN</a>
+  <a href="javascript:void(0)" id="logIn-2" onclick="signIn()" class="w3-bar-item w3-button">LOGIN</a>
+  <a href="javascript:void(0)" id="logOut-2" class="w3-bar-item w3-button" style="display:none">SIGN OUT</a>
 </nav>
 
 <!-- Header with full-height image -->
@@ -76,7 +78,7 @@
       </div>
       <div>
           <form id="login-form" style="max-width:25rem">
-              <p><input class="w3-input w3-border w3-white" type="text" placeholder="Username" required="" name="username">
+              <p><input class="w3-input w3-border w3-white" type="email" placeholder="Email" required="" name="username">
               </p>
               <p><input class="w3-input w3-border w3-white" type="password" placeholder="Password" required=""
                       name="password"></p>
@@ -101,7 +103,7 @@
   <p class="w3-center w3-large">Our Key role is:</p>
   <div class="w3-row-padding w3-center" style="margin-top:64px">
     <div>
-        <image src="images/mentorship.png" style="height:100px;margin:2px">
+        <image src="mentorship.png" style="height:100px;margin:2px">
       <p class="w3-large">Mentorship</p>
       <p>Attaining <strong>Global Data and Business Analyst Certifications</strong> <em>- A New Vista & Gateway to International Job Mobility.</em></p>
     </div>
