@@ -498,6 +498,8 @@ async function gotoView(button) {
 	aboutVue.display = false
 	coursesVue.display = false
 	qaVue.display = false
+  adminVue.display = false
+  updatesVue.display = false
   if (button == 'homeVue') {
     document.querySelector('.bgimg-1').style.display = '' 
   } else {
@@ -509,7 +511,5 @@ async function gotoView(button) {
   } else {
     document.querySelector('#loginPage').style.display = 'none' 
   }
-	adminVue.display = false
-  updatesVue.display = false
   window[`${button}`].display = true
 }
