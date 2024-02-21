@@ -9,7 +9,7 @@ body, html {
 .bgimg-1 {
   background-position: center;
   background-size: cover;
-  background-image: url("DataAnalyst.jpeg");
+  background-image: url("images/DataAnalyst.jpeg");
   min-height: 100%;
   opacity: 2;
 }
