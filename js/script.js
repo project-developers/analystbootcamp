@@ -41,6 +41,7 @@ const auth = getAuth()
 
 // collection ref
 const colRef = collection(db, 'users')
+const msgRef = collection(db, 'messages')
 
 /*
 const q = query(colRef, orderBy('createdAt'))
@@ -52,6 +53,21 @@ const unsubCol = onSnapshot(q, (snapshot) => {
     })
     console.log(users)
 })*/
+
+const sendMessageButton = document.getElementById('sendButton')
+
+sendMessageButton.addEventListener('click', () => {
+    addDoc(msgRef, {
+        email: currentUser.email,
+        class: navigationVue.admin ? "bot-message" : "user-message",
+        body: document.getElementById("messageInput").value,
+        createdAt: serverTimestamp(),
+        createdBy: currentUser.email
+    })
+    .then(() => {
+        console.log("Verified user successfully.");
+    })
+})
 
 async function checkUsername(email) {
     // get collection data
@@ -286,11 +302,15 @@ loginButton.addEventListener("click", async (e) => {
         document.querySelector("#logIn-2").style.display = 'none'
         document.querySelector("#logOut-1").style.display = ''
         document.querySelector("#logOut-2").style.display = ''
+        navigationVue.logged = true
+        navigationVue2.logged = true
     } else {
         document.querySelector("#logIn-1").style.display = ''
         document.querySelector("#logIn-2").style.display = ''
         document.querySelector("#logOut-1").style.display = 'none'
         document.querySelector("#logOut-2").style.display = 'none'
+        navigationVue.logged = false
+        navigationVue2.logged = false
     }
     if (user !== null && user.emailVerified) {
         const varified = await checkUsername(user.email)
@@ -305,16 +325,60 @@ loginButton.addEventListener("click", async (e) => {
             })
         } else {
             const q = query(colRef, where("email", "==", user.email))
+            var r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'));
             const unsubCol = onSnapshot(q, (snapshot) => {
                 let users = []
                 snapshot.docs.forEach((doc) => {
                   users.push({ ...doc.data(), id:doc.id })
                 })
                 console.log(users)
+                currentUser = users[0]
                 if (users[0].access == 'admin') {
+                    r = query(msgRef, orderBy('createdAt'))
                     console.log('Administrator')
+                    navigationVue.admin = true
+                    navigationVue2.admin = true
+                } else {
+                    r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'))
+                    navigationVue.admin = false
+                    navigationVue2.admin = false
                 }
+            })
+            const unsubMsg = onSnapshot(r, (snapshot) => {
+                let messages = []
+                snapshot.docs.forEach((doc) => {
+                    messages.push({ ...doc.data(), id:doc.id })
+                })
+                updatesVue.messages = messages.map((element) => ({
+                    ...element,
+                    time: element.createdAt ? convertTimestampToUserFriendlyFormat(element.createdAt.toDate()) : getCurrentTime(new Date()),
+                }));
+                console.log(messages)
             })
         }
     }
   })
+
+  function convertTimestampToUserFriendlyFormat(timestamp) {
+    // Check if the timestamp is valid
+    if (!timestamp || !(timestamp instanceof Date)) {
+      return "Invalid timestamp";
+    }
+  
+    // Format the date as a string, e.g., using toLocaleString()
+    const formattedDate = timestamp.toLocaleString();
+  
+    return getCurrentTime(formattedDate);
+  }
+
+  function getCurrentTime(date) {
+    var now = new Date(date);
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var timeString = hours + ':' + minutes + ' ' + ampm;
+    return timeString;
+  }
