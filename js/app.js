@@ -18,6 +18,7 @@ function signIn() {
 function goBack() {
     if (loginForm.confirmPassword.style.display == "") {
         //document.getElementById("securityQuestions").style.display = "none";
+        loginForm.fullname.style.display = "none";
         loginForm.confirmPassword.style.display = "none";
         document.getElementById("signUp").style.display = "";
         loginErrorMsg.style.opacity = 0;
@@ -27,6 +28,7 @@ function goBack() {
         });
         document.querySelector(".signIn").style.display = "none";
         //document.getElementById("securityQuestions").style.display = "none";
+        loginForm.fullname.style.display = "none";
         loginForm.confirmPassword.style.display = "none";
     
     }
@@ -39,6 +41,7 @@ function goBack() {
 function signUp() {
   loginButton.innerText = 'SIGN UP'
   //document.getElementById("securityQuestions").style.display = "";
+  loginForm.fullname.style.display = "";
   loginForm.confirmPassword.style.display = "";
 
   document.getElementById("signUp").style.display = "none";
@@ -48,6 +51,7 @@ const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-form-submit");
 const defaultLogin = loginButton.innerHTML;
 const loginErrorMsg = document.getElementById("login-error-msg");
+loginForm.fullname.style.display = "none";
 loginForm.confirmPassword.style.display = "none";
 //document.getElementById("securityQuestions").style.display = "none";
 loginErrorMsg.style.opacity = 0;
