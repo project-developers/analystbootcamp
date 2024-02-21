@@ -312,6 +312,12 @@ loginButton.addEventListener("click", async (e) => {
         navigationVue.logged = false
         navigationVue2.logged = false
     }
+    homeVue.display = true
+	aboutVue.display = false
+	coursesVue.display = false
+	qaVue.display = false
+    adminVue.display = false
+    updatesVue.display = false
     if (user !== null && user.emailVerified) {
         const varified = await checkUsername(user.email)
         if (!varified) {
