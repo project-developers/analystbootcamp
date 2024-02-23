@@ -22,6 +22,20 @@ body, html {
   opacity: 2;
 }
 
+/*.bgimg-3 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("../images/DataAnalyst.jpeg");
+    /*min-height: 100%;*/
+    /*opacity: 2;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 0px; 
+    height: 200%;
+    width: 200%;
+    overflow: auto;
+}*/
+
 .w3-bar .w3-button {
   padding: 16px;
 }
@@ -72,10 +86,34 @@ body, html {
     background-color: #eee;
 }
 
-#messageInput {
+.messageInput {
     flex: 1;
     padding: 8px;
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.outer-container {
+  padding: 300px;
+  /*border: 1px solid #cc1c1c;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100wh;
+  height: 100vh; /* Ensure the container takes at least the full viewport height */
+  background-image: url('../images/DataAnalyst.jpeg'); /* Replace 'your-image.jpg' with your image file */
+  background-size: 400% 300%; /* 12 parts horizontally, 1 part vertically */
+   /* Adjust the background position to show the desired part */
+}
+
+.inner-container {
+  text-align: left;
+}
+
+.centered-div {
+  background-color: #3498db;
+  color: #fff;
+  /*padding: 20px;*/
+  display: inline-block;
 }
