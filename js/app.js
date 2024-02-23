@@ -504,128 +504,67 @@ function processAdmin() {
         data: {
           display: false,
           slides: [
-            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span>`},
-            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
               <li class="w3-xxlarge">Loss in value of the National Currency</li>
             </ul>`},
-            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
               <li class="w3-xxlarge">Loss in value of the National Currency</li>
-              <li class="w3-xxlarge">Inflation</li>
+              <li class="w3-xxlarge">Spiraling Inflation</li>
             </ul>`},
-            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
               <li class="w3-xxlarge">Loss in value of the National Currency</li>
-              <li class="w3-xxlarge">Inflation</li>
+              <li class="w3-xxlarge">Spiraling Inflation</li>
               <li class="w3-xxlarge">Unprecedented unemployment rate</li>
             </ul>`},
-            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
               <li class="w3-xxlarge">Loss in value of the National Currency</li>
-              <li class="w3-xxlarge">Inflation</li>
+              <li class="w3-xxlarge">Spiraling Inflation</li>
               <li class="w3-xxlarge">Unprecedented unemployment rate</li>
               <li class="w3-xxlarge"><strong>Frustration</strong></li>
             </ul>`},
-            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span>`},
-            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Upgrade
-              </li>
-            </ul>`},
-            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
             <ul>
               <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
               </li>
             </ul>`},
-            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
             <ul>
               <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
                 <ul>
-                  <li>Soft Skills</li>
+                  <li>Leverage on soft skills</li>
+                  <li class="w3-xxlarge">Right Instructors that will teach you from <strong>Newbie</strong> to <strong>Pro</strong></li>
+                  <li class="w3-xxlarge">Right Resources</li>
+                  <li class="w3-xxlarge">Firm Commitment</li>
                 </ul>
               </li>
             </ul>`},
-            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span>`},
-            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Right Instructors</li>
-            </ul>`},
-            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Right Instructors
-                <ul>
-                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
-                </ul>
-              </li>
-            </ul>`},
-            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Right Instructors
-                <ul>
-                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
-                </ul>
-              </li>
-              <li class="w3-xxlarge">Right Resources</li>
-            </ul>`},
-            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Right Instructors
-                <ul>
-                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
-                </ul>
-              </li>
-              <li class="w3-xxlarge">Right Resources</li>
-              <li class="w3-xxlarge">Commitment</li>
-            </ul>`},
-            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span>`},
-            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span><br>
-            <ul>
-              <li class="w3-xxlarge">AI<span> - Artificial Intelligence</span></li>
-            </ul>`},
-            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span><br>
             <ul>
               <li class="w3-xxlarge">AI<span> - Artificial Intelligence</span></li>
               <li class="w3-xxlarge">IOT<span> - Internet of Things</span></li>
             </ul>`},
-            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">Stay afloat:</span>`},
-            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">Stay afloat:</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Stay afloat:</span><br>
             <ul>
               <li class="w3-xxlarge">Follow the direction of<em> traffic.</em></li>
             </ul>`},
-            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Who is a Business Analyst?</span>`},
-            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Who is a Business Analyst?</span><br>
-            <span class="w3-xxlarge">This is a person who processes, interprets and documents business processes, products, services and software through analysis of data.</span>`},
-            {"style": "background-position: 200% 200%", "content":`<span class="w3-jumbo w3-hide-small">What does a Data Analyst do?</span>`},
-            {"style": "background-position: 200% 200%", "content":`<span class="w3-jumbo w3-hide-small">What does a Data Analyst do?</span><br>
-            <span class="w3-xxlarge">Collect, clean, study and interpret data sets in order to answer a question or solve a problem.</span>`},
-            {"style": "background-position: 300% 200%", "content":`<span class="w3-jumbo w3-hide-small">Is this for only those who have studied subjects related to IT or Computer?</span>`},
-            {"style": "background-position: 300% 200%", "content":`<span class="w3-jumbo w3-hide-small">Is this for only those who have studied subjects related to IT or Computer?</span><br>
-            <span class="w3-xxlarge">No. Everything, just everything we know now, we learned them. We’ve all got the potential. Our Brain never gets full and you don’t need to delete any file for a lack of storage.</span>`},
-            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a data analyst without a degree?</span>`},
-            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a data analyst without a degree?</span><br>
-            <span class="w3-xxlarge">Yes. It is not always necessary to have a degree to get hired as a data analyst. Data analysts are in demand, and employers want to know that you have the skills to do the job. If you don't have a degree, focus on making your portfolio shine with your best.</span>`},
-            {"style": "background-position: 0% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span>`},
-            {"style": "background-position: 0% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span><br>
-            <span class="w3-xxlarge">Include transferable skills. Even if you don't have direct experience in business analysis, you likely have transferable skills that can be applied to the role. Keywords like problem-solving, project management, and communication are all valuable skills for a business analyst.</span>`},
-            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span>`},
-            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
-            <ul>
-              <li class="w3-xxlarge">Mentoring</li>
-            </ul>`},
-            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
-            <ul>
-              <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span></li>
-            </ul>`},
-            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
-            <ul>
-              <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span>
-                <ul>
-                  <li>Telling you what is happening at the moment</li>
-                </ul>
-              </li>
-            </ul>`},
-            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Q&A</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Who is a Business Analyst?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">This is a person who processes, interprets and documents business processes, products, services and software through analysis of data.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">What does a Data Analyst do?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">Collect, clean, study and interpret data sets in order to answer a question or solve a problem.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Is this for only those who have studied subjects related to IT or Computer?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">No. Everything, just everything we know now, we learned them. We’ve all got the potential. Our Brain never gets full and you don’t need to delete any file for a lack of storage.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a data analyst without a degree?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">Yes. It is not always necessary to have a degree to get hired as a data analyst. Data analysts are in demand, and employers want to know that you have the skills to do the job. If you don't have a degree, focus on making your portfolio shine with your best.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">When preparing your CV, include transferable skills. Even if you don't have direct experience in business analysis, you likely have transferable skills that can be applied to the role. Keywords like problem-solving, project management, and communication are all valuable skills for a business analyst.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">What then, is needed?</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">What then, is needed?</span><br>
             <ul>
               <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span>
                 <ul>
@@ -633,11 +572,6 @@ function processAdmin() {
                   <li>Prompting you to act now</li>
                 </ul>
               </li>
-            </ul>`},
-            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span>`},
-            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
-            <ul>
-              <li class="w3-xxlarge">Study</li>
             </ul>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
             <ul>
@@ -670,18 +604,34 @@ function processAdmin() {
                 </ul>
               </li>
             </ul>`},
-            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span>`},
-            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
             <ul>
-              <li class="w3-xxlarge">Prepare your CV</li>
-            </ul>`},
-            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
+              <li class="w3-xxlarge">Study<span><em> at your own pace</em> with video on Demand.</span>
+                <ul>
+                  <li>Certification</li>
+                  <li>Full lifetime access</li>
+                  <li>Downloadable resources for your library</li>
+                </ul>
+              </li>
+            </ul>
+            <span class="w3-xxlarge w3-hide-small"><strong>Please note, this could be achieved in less than 12 months from tonight.</strong></span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
             <ul>
               <li class="w3-xxlarge">Prepare your CV</li>
               <li class="w3-xxlarge">Start applying for jobs globally</li>
             </ul>`},
-            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">This entire Package will go for £?</span>`},
-            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Thanks.</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">This entire Package will go for ??</span>`},
+            {"style": "background-position: 200% 100%", "content":`<h1 style="font-size:196px">Thank you!</h1>`},
+            {"style": "background: #fff", "content":`<div style="font-size:64px; margin-bottom:100px">For further details, please click the link on the chat. Then follow the steps below:</div>
+            <div style="font-size:32px;font-weight:700">
+              <ol>
+                <li>Go to Menu (On mobile device), click LOGIN > then Sign Up to Create an account</li>
+                <li>Verify email by checking for link in your Inbox, Spam or Junk</li>
+                <li>Click link</li>
+                <li>Refresh the page</li>
+                <li>Click UPDATES and send your message.</li>
+              <ol>
+            </div>`},
         ],
           slideCount: 0,
         },
