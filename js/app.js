@@ -10,7 +10,9 @@ function onClick(element) {
 function signIn() {
   w3_close();
   document.querySelectorAll(".main").forEach((elem) => {
-    elem.style.display = "none";
+    if (!elem.className.includes('w3-top') && !elem.className.includes('bgimg-3')) {
+        elem.style.display = "none";
+    } 
   });
   document.querySelector(".signIn").style.display = "";
 }
@@ -18,9 +20,14 @@ function signIn() {
 function goBack() {
     if (loginForm.confirmPassword.style.display == "") {
         //document.getElementById("securityQuestions").style.display = "none";
-        loginForm.fullname.style.display = "none";
+        loginForm.firstname.style.display = "none";
+        loginForm.lastname.style.display = "none";
+        loginForm.othernames.style.display = "none";
         loginForm.confirmPassword.style.display = "none";
-        document.getElementById("signUp").style.display = "";
+
+        document.getElementById("loginTitle").innerHTML = "LOGIN"
+        document.getElementById("signUp").parentNode.style.display = "";
+        document.getElementById("signUp").parentNode.nextElementSibling.style.display = "none";
         loginErrorMsg.style.opacity = 0;
     } else {
         document.querySelectorAll(".main").forEach((elem) => {
@@ -28,10 +35,13 @@ function goBack() {
         });
         document.querySelector(".signIn").style.display = "none";
         //document.getElementById("securityQuestions").style.display = "none";
-        loginForm.fullname.style.display = "none";
+        loginForm.firstname.style.display = "none";
+        loginForm.lastname.style.display = "none";
+        loginForm.othernames.style.display = "none";
         loginForm.confirmPassword.style.display = "none";
     
     }
+    document.querySelector('.bgimg-3').style.display = 'none'
     loginButton.innerHTML = '<i class="fa fa-sign-in"></i> LOGIN'
     loginErrorMsg.style.opacity = 0;
     loginForm.reset()
@@ -39,19 +49,26 @@ function goBack() {
 }
 
 function signUp() {
-  loginButton.innerText = 'SIGN UP'
+  loginButton.innerHTML = 'SIGN UP'
   //document.getElementById("securityQuestions").style.display = "";
-  loginForm.fullname.style.display = "";
+  loginErrorMsg.innerHTML = "";
+  loginForm.firstname.style.display = "";
+  loginForm.lastname.style.display = "";
+  loginForm.othernames.style.display = "";
   loginForm.confirmPassword.style.display = "";
 
-  document.getElementById("signUp").style.display = "none";
+  document.getElementById("loginTitle").innerHTML = "SIGN UP"
+  document.getElementById("signUp").parentNode.style.display = "none";
+  document.getElementById("signUp").parentNode.nextElementSibling.style.display = "";
 }
 
 const loginForm = document.getElementById("login-form");
 const loginButton = document.getElementById("login-form-submit");
 const defaultLogin = loginButton.innerHTML;
 const loginErrorMsg = document.getElementById("login-error-msg");
-loginForm.fullname.style.display = "none";
+loginForm.firstname.style.display = "none";
+loginForm.lastname.style.display = "none";
+loginForm.othernames.style.display = "none";
 loginForm.confirmPassword.style.display = "none";
 //document.getElementById("securityQuestions").style.display = "none";
 loginErrorMsg.style.opacity = 0;
@@ -59,6 +76,7 @@ loginErrorMsg.style.opacity = 0;
 
 var logged = false
 var currentUser = undefined
+var currentMessage = undefined
 
 var navigationVue, navigationVue2, homeVue, aboutVue, coursesVue, qaVue, updatesVue, adminVue;
 
@@ -390,17 +408,18 @@ processQA()
 
 document.querySelector('#updates').innerHTML = `<template>
 <div v-if="display == true">
-  <div class="chat-container" style="margin-top: 84px;">
-    <div id="chatMessages" class="chat-messages">
-        <div v-for="(message, count) in messages" class="message-container">
-            <div :class="message.class">{{ message.body }}
-            {{ message.time }}</div>
+  <div v-for="(user,count) in allUsers()" class="chat-container" style="margin-top: 84px;">
+    <h3 v-if="allUsers().length !== 1" style="padding-left:20px">{{ user.accountName }}</h3>
+    <div class="chat-messages">
+        <div v-for="(message, count) in messages.filter(elem=>elem.email == user.email)" class="message-container">
+            <div :class="message.class">{{ message.body }}</div>
         </div>
     </div>
-    <div class="user-input"><textarea id="messageInput" style="height: 45px;"></textarea> <button 
-      onclick="sendMessage()" class="w3-button w3-black" style="border-radius: 10px;"><i 
-      class="fa fa-paper-plane"></i></button></div>
+    <div class="user-input"><textarea class="messageInput" style="height: 45px;"></textarea> <button 
+      @click="sendMessage(user, $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
+      class="fa fa-paper-plane"></i></button>
     </div>
+  </div>
 </div>
 </template>`
 
@@ -413,15 +432,40 @@ function processUpdates() {
           messages: [],
         },
         computed: {
-
+          
         },
         methods: {
-			
+          allUsers() {
+            return getUniqueElementsByProperty(this.messages, ['email'])
+          },
           mode() {
             return 'w3-bar-item w3-button ' + mode.replace('w3-card ','')
           },
+          sendMessage(user, event) {
+            //console.log(event.parentNode)
+            //console.log(event.parentNode.querySelector("textarea").value)
+            currentMessage = {
+              "email": user.email,
+              "firstname": user.accountName,
+              "body": event.parentNode.querySelector("textarea").value
+            }
+            sendMessage(event.parentNode.querySelector("textarea"))
+          }
         }
     })
+}
+
+function getUniqueElementsByProperty(arr, propNames) {
+  const uniqueSet = new Set();
+  
+  return arr.filter(obj => {
+      const key = propNames.map(prop => obj[prop]).join('|');
+      if (!uniqueSet.has(key)) {
+          uniqueSet.add(key);
+          return true;
+      }
+      return false;
+  });
 }
 
 function getCurrentTime() {
@@ -435,43 +479,20 @@ function getCurrentTime() {
   var timeString = hours + ':' + minutes + ' ' + ampm;
   return timeString;
 }
-function sendMessage() {
+
+function sendMessage(element) {
   document.getElementById('sendButton').click()
-  //updatesVue.messages.push({class:"user-message", body:messageInput.value, time:getCurrentTime()})
-  document.getElementById("messageInput").value = "";
-  //var chatMessages = document.getElementById("chatMessages");
-/*
-  if (messageInput.value.trim() !== "") {
-      var messageContainer = document.createElement("div");
-      messageContainer.className = "message-container";
-      chatMessages.appendChild(messageContainer);
-
-      var userMessage = document.createElement("div");
-      userMessage.className = "user-message";
-      userMessage.textContent = messageInput.value + ' ' + getCurrentTime();
-      messageContainer.appendChild(userMessage);
-
-      // Simulate a response (you can replace this with actual backend communication)
-      var botMessage = document.createElement("div");
-      botMessage.className = "bot-message";
-      botMessage.textContent = "Thanks for your message!" + ' ' + getCurrentTime();
-      messageContainer.appendChild(botMessage);
-
-      // Clear the input field after sending the message
-      messageInput.value = "";
-
-      // Scroll to the bottom of the chat messages
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-  }*/
+  element.value = "";
 }
 
 processUpdates()
 
 document.querySelector('#admin').innerHTML = `<template>
-<div v-if="display == true">
-  <h3 class="w3-center" style="margin-top:84px">ADMIN</h3>
-  <div style="padding:16px">
-    <button>Show Slide</button>
+<div class="outer-container" :style="slides[slideCount].style">
+  <div class="inner-container">
+    <div v-html="slides[slideCount].content" class="centered-div w3-text-brown" style="padding:48px;background: #ffffffef;">
+      
+    </div>
   </div>
 </div>
 </template>`
@@ -482,6 +503,187 @@ function processAdmin() {
         el: document.querySelector('#admin'),
         data: {
           display: false,
+          slides: [
+            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span>`},
+            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Loss in value of the National Currency</li>
+            </ul>`},
+            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Loss in value of the National Currency</li>
+              <li class="w3-xxlarge">Inflation</li>
+            </ul>`},
+            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Loss in value of the National Currency</li>
+              <li class="w3-xxlarge">Inflation</li>
+              <li class="w3-xxlarge">Unprecedented unemployment rate</li>
+            </ul>`},
+            {"style": "background-position: 0% 0%", "content":`<span class="w3-jumbo w3-hide-small">Realities:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Loss in value of the National Currency</li>
+              <li class="w3-xxlarge">Inflation</li>
+              <li class="w3-xxlarge">Unprecedented unemployment rate</li>
+              <li class="w3-xxlarge"><strong>Frustration</strong></li>
+            </ul>`},
+            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span>`},
+            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Upgrade
+              </li>
+            </ul>`},
+            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
+              </li>
+            </ul>`},
+            {"style": "background-position: 300% 0%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
+                <ul>
+                  <li>Soft Skills</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span>`},
+            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Right Instructors</li>
+            </ul>`},
+            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Right Instructors
+                <ul>
+                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Right Instructors
+                <ul>
+                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
+                </ul>
+              </li>
+              <li class="w3-xxlarge">Right Resources</li>
+            </ul>`},
+            {"style": "background-position: 200% 0%", "content":`<span class="w3-jumbo w3-hide-small">Learn Anything:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Right Instructors
+                <ul>
+                  <li>You will be taught from <strong>Newbie</strong> to <strong>Pro</strong></li>
+                </ul>
+              </li>
+              <li class="w3-xxlarge">Right Resources</li>
+              <li class="w3-xxlarge">Commitment</li>
+            </ul>`},
+            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span>`},
+            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span><br>
+            <ul>
+              <li class="w3-xxlarge">AI<span> - Artificial Intelligence</span></li>
+            </ul>`},
+            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">The world has transitioned:</span><br>
+            <ul>
+              <li class="w3-xxlarge">AI<span> - Artificial Intelligence</span></li>
+              <li class="w3-xxlarge">IOT<span> - Internet of Things</span></li>
+            </ul>`},
+            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">Stay afloat:</span>`},
+            {"style": "background-position: 100% 0%", "content":`<span class="w3-jumbo w3-hide-small">Stay afloat:</span><br>
+            <ul>
+              <li class="w3-xxlarge">Follow the direction of<em> traffic.</em></li>
+            </ul>`},
+            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Who is a Business Analyst?</span>`},
+            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Who is a Business Analyst?</span><br>
+            <span class="w3-xxlarge">This is a person who processes, interprets and documents business processes, products, services and software through analysis of data.</span>`},
+            {"style": "background-position: 200% 200%", "content":`<span class="w3-jumbo w3-hide-small">What does a Data Analyst do?</span>`},
+            {"style": "background-position: 200% 200%", "content":`<span class="w3-jumbo w3-hide-small">What does a Data Analyst do?</span><br>
+            <span class="w3-xxlarge">Collect, clean, study and interpret data sets in order to answer a question or solve a problem.</span>`},
+            {"style": "background-position: 300% 200%", "content":`<span class="w3-jumbo w3-hide-small">Is this for only those who have studied subjects related to IT or Computer?</span>`},
+            {"style": "background-position: 300% 200%", "content":`<span class="w3-jumbo w3-hide-small">Is this for only those who have studied subjects related to IT or Computer?</span><br>
+            <span class="w3-xxlarge">No. Everything, just everything we know now, we learned them. We’ve all got the potential. Our Brain never gets full and you don’t need to delete any file for a lack of storage.</span>`},
+            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a data analyst without a degree?</span>`},
+            {"style": "background-position: 100% 200%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a data analyst without a degree?</span><br>
+            <span class="w3-xxlarge">Yes. It is not always necessary to have a degree to get hired as a data analyst. Data analysts are in demand, and employers want to know that you have the skills to do the job. If you don't have a degree, focus on making your portfolio shine with your best.</span>`},
+            {"style": "background-position: 0% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span>`},
+            {"style": "background-position: 0% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span><br>
+            <span class="w3-xxlarge">Include transferable skills. Even if you don't have direct experience in business analysis, you likely have transferable skills that can be applied to the role. Keywords like problem-solving, project management, and communication are all valuable skills for a business analyst.</span>`},
+            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span>`},
+            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
+            <ul>
+              <li class="w3-xxlarge">Mentoring</li>
+            </ul>`},
+            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
+            <ul>
+              <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span></li>
+            </ul>`},
+            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
+            <ul>
+              <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span>
+                <ul>
+                  <li>Telling you what is happening at the moment</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 300% 100%", "content":`<span class="w3-jumbo w3-hide-small">What is needed?</span><br>
+            <ul>
+              <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span>
+                <ul>
+                  <li>Telling you what is happening at the moment</li>
+                  <li>Prompting you to act now</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
+            <ul>
+              <li class="w3-xxlarge">Study</li>
+            </ul>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
+            <ul>
+              <li class="w3-xxlarge">Study<span><em> at your own pace</em> with video on Demand.</span></li>
+            </ul>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
+            <ul>
+              <li class="w3-xxlarge">Study<span><em> at your own pace</em> with video on Demand.</span>
+                <ul>
+                  <li>Certification</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
+            <ul>
+              <li class="w3-xxlarge">Study<span><em> at your own pace</em> with video on Demand.</span>
+                <ul>
+                  <li>Certification</li>
+                  <li>Full lifetime access</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Then</span><br>
+            <ul>
+              <li class="w3-xxlarge">Study<span><em> at your own pace</em> with video on Demand.</span>
+                <ul>
+                  <li>Certification</li>
+                  <li>Full lifetime access</li>
+                  <li>Downloadable resources for your library</li>
+                </ul>
+              </li>
+            </ul>`},
+            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span>`},
+            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
+            <ul>
+              <li class="w3-xxlarge">Prepare your CV</li>
+            </ul>`},
+            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
+            <ul>
+              <li class="w3-xxlarge">Prepare your CV</li>
+              <li class="w3-xxlarge">Start applying for jobs globally</li>
+            </ul>`},
+            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">This entire Package will go for £?</span>`},
+            {"style": "background-position: 100% 100%", "content":`<span class="w3-jumbo w3-hide-small">Thanks.</span>`},
+        ],
+          slideCount: 0,
         },
         computed: {
 
@@ -497,6 +699,34 @@ function processAdmin() {
 
 processAdmin()
 
+document.addEventListener('keydown', function (e) {
+  if (adminVue.display !== true) {return}
+  switch (e.key) {
+    case 'ArrowRight':
+      if (adminVue.slideCount == adminVue.slides.length - 1) {adminVue.slideCount = -1}
+      adminVue.slideCount++;
+      break;
+    case 'ArrowLeft':
+      if (adminVue.slideCount == 0) {adminVue.slideCount = adminVue.slides.length}
+      adminVue.slideCount--;
+      break;
+    case 'ArrowDown':
+      if (adminVue.slideCount == adminVue.slides.length - 1) {adminVue.slideCount = -1}
+      adminVue.slideCount++;
+      break;
+    case 'ArrowUp':
+      if (adminVue.slideCount == 0) {adminVue.slideCount = adminVue.slides.length}
+      adminVue.slideCount--;
+      break;
+    case 'Enter':
+      document.querySelector(".w3-top").style.display = 'none';
+      break;
+    case 'Escape':
+      document.querySelector(".w3-top").style.display = '';
+      break;
+  }
+});
+
 async function gotoView(button) {
 	homeVue.display = false
 	aboutVue.display = false
@@ -504,16 +734,28 @@ async function gotoView(button) {
 	qaVue.display = false
   adminVue.display = false
   updatesVue.display = false
-  if (button == 'homeVue') {
-    document.querySelector('.bgimg-1').style.display = '' 
-  } else {
-    document.querySelector('.bgimg-1').style.display = 'none' 
-  }
+  
   if (button == 'loginPageVue') {
-    document.querySelector('#loginPage').style.display = '' 
+    document.querySelector('#loginPage').style.display = ''
     return
   } else {
+    document.querySelectorAll(".main").forEach((elem) => {
+      if (!elem.className.includes('w3-top') && !elem.className.includes('bgimg-3')) {
+          elem.style.display = "";
+      } 
+    });
+    document.querySelector(".signIn").style.display = "";
     document.querySelector('#loginPage').style.display = 'none' 
+  }
+  if (button == 'homeVue') {
+    document.querySelector('.bgimg-1').style.display = ''
+    document.querySelector('.bgimg-3').style.display = 'none'
+  } else if (button == 'adminVue') {
+    document.querySelector('.bgimg-3').style.display = ''
+    document.querySelector('.bgimg-1').style.display = 'none' 
+  } else {
+    document.querySelector('.bgimg-1').style.display = 'none'
+    document.querySelector('.bgimg-3').style.display = 'none'
   }
   window[`${button}`].display = true
 }
