@@ -32,36 +32,44 @@
 </nav>
 
 <!-- Header with full-height image -->
-<header class="bgimg-1 w3-display-container w3-grayscale-min main" id="home">
+<header class="bgimg-1 w3-display-container main" id="home">
   
 </header>
+
+<!-- Work Section -->
+<div class="bgimg-3 main" id="admin" style="display:none">
+    
+</div>
 
 <header class="bgimg-2 w3-display-container w3-grayscale-min signIn" id="loginPage" style="display: none;">
             
   
   <div class="w3-container w3-light-grey" id="main-holder" style="padding:36px;">
-    <p id="goBack" onclick="goBack()"><i class="fa fa-arrow-left"></i> BACK</p>  
-    <h3 class="w3-left" style="padding-right:10px">LOGIN</h3>
-      <div id="login-error-msg-holder">
+    <h3 class="w3-left" style="padding-right:10px;padding-top:50px" id="loginTitle">LOGIN</h3>
+      <div id="login-error-msg-holder"  style="padding-top:50px">
           <p id="login-error-msg"> Invalid username <span id="error-msg-second-line">and/or password</span></p>
       </div>
       <div>
           <form id="login-form" style="max-width:25rem">
-            <p><input class="w3-input w3-border w3-white" type="text" placeholder="Full Name" required="" name="fullname">
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="First Name" required="" name="firstname">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="Last Name" required="" name="lastname">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="Other Names" required="" name="othernames">
             </p>
             <p><input class="w3-input w3-border w3-white" type="email" placeholder="Email" required="" name="username">
-              </p>
-              <p><input class="w3-input w3-border w3-white" type="password" placeholder="Password" required=""
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="password" placeholder="Password" required=""
                       name="password"></p>
-              <p><input class="w3-input w3-border w3-white" type="password" placeholder="Confirm Password" required=""
+            <p><input class="w3-input w3-border w3-white" type="password" placeholder="Confirm Password" required=""
                       name="confirmPassword"></p>
-              <div id="securityQuestions"></div>
-              <p>
-                  <button class="w3-button w3-brown" type="submit" id="login-form-submit">
-                      <i class="fa fa-sign-in"></i> LOGIN
-                  </button>
-              </p>
-              <p id="signUp" onclick="signUp()" style="padding:48px 0;">SIGN UP</p>
+            <p>
+                <button class="w3-button w3-brown" type="submit" id="login-form-submit">
+                    <i class="fa fa-sign-in"></i> LOGIN
+                </button>
+            </p>
+              <p style="padding:24px 0;">Don't have an account? <span style="color:#795548;font-weight: 900;cursor: pointer;" id="signUp" onclick="signUp()">Sign Up</span></p>
+              <p style="padding:24px 0; display:none">Already have an account? <span style="color:#795548;font-weight: 900;cursor: pointer;" onclick="goBack()">Login</span></p>
           </form>
           
       </div>
@@ -97,11 +105,7 @@
 </div>
 <button id="sendButton" class="w3-button w3-black" style="border-radius: 10px; display:none"><i class="fa fa-paper-plane"></i></button>
 
-<!-- Work Section -->
-<div class="w3-container main" id="admin">
-    
-</div>
- 
+
   <script src="js/app.js"></script>
   <script type="module" src="js/script.js"></script>
 
