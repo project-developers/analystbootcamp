@@ -58,26 +58,30 @@ const sendMessageButton = document.getElementById('sendButton')
 
 sendMessageButton.addEventListener('click', () => {
     addDoc(msgRef, {
-        email: currentUser.email,
+        email: currentMessage.email,
         class: navigationVue.admin ? "bot-message" : "user-message",
-        body: document.getElementById("messageInput").value,
+        body: currentMessage.body,//document.getElementById("messageInput").value,
+        accountName: currentMessage.firstname,
         createdAt: serverTimestamp(),
-        createdBy: currentUser.email
+        createdBy: currentMessage.email,
+        createdByName: currentMessage.firstname
     })
     .then(() => {
-        console.log("Verified user successfully.");
+        //console.log("Verified user successfully.");
     })
 })
 
 async function checkUsername(email) {
     // get collection data
     // queries
-    const q = query(colRef, where("email", "==", email))
+    const q = query(msgRef, where("email", "==", email))
     const snapshot = await getDocs(q)
     let users = []
     snapshot.docs.forEach((doc) => {
         users.push({ ...doc.data() }.email)
     })
+    //console.log(users)
+    await checkSignIn(email)
     if (users.includes(email)) {
         return true
     } else {
@@ -85,23 +89,18 @@ async function checkUsername(email) {
     }
 }
 
-async function checkSignIn(username, password) {
+async function checkSignIn(email) {
     // get collection data
     // queries
-    const q = query(colRef, where("username", "==", username))
+    const q = query(colRef, where("email", "==", email))
     const snapshot = await getDocs(q)
     let users = []
     snapshot.docs.forEach((doc) => {
         users.push({ ...doc.data(), id:doc.id })
     })
-    console.log(users, username)
-    if (users[0].username == username && users[0].password == password) {
-        currentUser = users[0]
-        return true
-    } else {
-        currentUser = undefined
-        return false
-    }
+    //console.log(users, email)
+    currentUser = users[0]
+    return
 }
 
 async function updateProperties(id, properties) {
@@ -115,7 +114,9 @@ const logOutButton1 = document.querySelector('#logOut-1')
 logOutButton1.addEventListener('click', () => {
     signOut(auth)
         .then(() => {
-            //console.log('the user is signed out')
+            navigationVue.admin = false
+            navigationVue2.admin = false
+            goBack()
         })
         .catch((err) => {
             console.log(err.message)
@@ -127,6 +128,8 @@ logOutButton2.addEventListener('click', () => {
     signOut(auth)
         .then(() => {
             //console.log('the user is signed out')
+            navigationVue.admin = false
+            navigationVue2.admin = false
             goBack()
         })
         .catch((err) => {
@@ -142,6 +145,18 @@ loginButton.addEventListener("click", async (e) => {
 
     if (loginForm.confirmPassword.style.display == "") {
         if (
+            loginForm.firstname.value.trim() == ""
+            ) {
+            loginErrorMsg.innerHTML = "Please enter First Name.";
+            loginErrorMsg.style.opacity = 1
+            return
+        } else if (
+            loginForm.lastname.value.trim() == ""
+            ) {
+            loginErrorMsg.innerHTML = "Please enter Last Name.";
+            loginErrorMsg.style.opacity = 1
+            return
+        } else if (
             loginForm.password.value !== loginForm.confirmPassword.value
             ) {
             loginErrorMsg.innerHTML = "Password does not match.";
@@ -150,20 +165,27 @@ loginButton.addEventListener("click", async (e) => {
         }
         createUserWithEmailAndPassword(auth, username, password)
             .then((cred) => {
-                //console.log('user created:', cred.user)
-                //console.log("You have successfully logged in.");
-                //document.getElementById("securityQuestions").style.display = "none";
-                loginForm.reset()
+                
                 loginForm.confirmPassword.style.display = "none";
                 
                 logged = true;
-                
-                loginErrorMsg.style.opacity = 0;
-                goBack()
+                addDoc(colRef, {
+                    email: loginForm.username.value,
+                    firstname: loginForm.firstname.value,
+                    lastname: loginForm.lastname.value,
+                    othernames: loginForm.othernames.value,
+                    createdAt: serverTimestamp(),
+                    createdBy: loginForm.firstname.value
+                })
+                .then(() => {
+                    console.log("saved user successfully.");
+                    loginForm.reset()
+                    loginErrorMsg.style.opacity = 0;
+                    goBack()
+                })
                 sendEmailVerification(auth.currentUser)
                     .then(() => {
-                        // Email verification sent!
-                        // ...
+                        
                     });
             })
             .catch((err) => {
@@ -182,74 +204,7 @@ loginButton.addEventListener("click", async (e) => {
                     loginErrorMsg.style.opacity = 1
                 }
             })
-        //const existingUser = await checkUsername(username.toLowerCase())
-        /*if (
-            "" == username ||
-            " " == username ||
-            username.includes(" ")
-        ) {
-            loginErrorMsg.innerHTML = "Please enter a valid username.";
-            loginErrorMsg.style.opacity = 1
-        } else if (
-            existingUser
-        ) {
-            
-            loginErrorMsg.innerHTML = "Username already exists.";
-            loginErrorMsg.style.opacity = 1
-        } else if (
-            "" == password
-        ) {
-            loginErrorMsg.innerHTML = "Please enter a valid password.";
-            loginErrorMsg.style.opacity = 1
-        } else if (
-            loginForm.password.value !== loginForm.confirmPassword.value
-            ) {
-            loginErrorMsg.innerHTML = "Password is not the same.";
-            loginErrorMsg.style.opacity = 1
-        } else {
-
-            createUserWithEmailAndPassword(auth, username, password)
-                .then((cred) => {
-                    console.log('user created:', cred.user)
-                    document.querySelector(".login").innerHTML = '<i class="fa fa-sign-out"></i> SIGN OUT'
-                    document.querySelector(".login-2").innerHTML = 'SIGN OUT'
-                    console.log("You have successfully logged in.");
-                    //document.getElementById("securityQuestions").style.display = "none";
-                    loginForm.reset()
-                    loginForm.confirmPassword.style.display = "none";
-                    
-                    logged = true;
-                    
-                    loginErrorMsg.style.opacity = 0;
-                    goBack()
-                })
-                .catch((err) => {
-                    console.log(err.message)
-                    if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
-                        loginErrorMsg.innerHTML = "Email already in use."
-                        loginErrorMsg.style.opacity = 1
-                    }
-                })*/
-            /*
-            addDoc(colRef, {
-                username: username.toLowerCase(),
-                password: password,
-                securityQuestion: getSelectedOption(document.getElementsByName("securityGroup")),
-                securityAnswer: document.querySelector("#answer").value.toLowerCase(),
-                createdAt: serverTimestamp()
-            })
-            .then(() => {
-                console.log("You have successfully logged in.");
-                document.getElementById("securityQuestions").style.display = "none";
-                loginForm.reset()
-                loginForm.confirmPassword.style.display = "none";
-                
-                logged = true;
-                
-                loginErrorMsg.style.opacity = 0;
-                goBack()
-            })
-        }*/
+        
     } else {
         signInWithEmailAndPassword(auth, username, password)
             .then((cred) => {
@@ -268,66 +223,14 @@ loginButton.addEventListener("click", async (e) => {
                 if (err.message == 'Firebase: Error (auth/invalid-credential).') {
                     loginErrorMsg.innerHTML = "Invalid credential."
                     loginErrorMsg.style.opacity = 1
-                }/* else if (err.message == 'Firebase: Error (auth/missing-password).') {
-                    loginErrorMsg.innerHTML = "Enter password."
-                    loginErrorMsg.style.opacity = 1
-                } else if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
-                    loginErrorMsg.innerHTML = "Email already in use."
-                    loginErrorMsg.style.opacity = 1
-                } else if (err.message == 'Firebase: Password should be at least 6 characters (auth/weak-password).') {
-                    oginErrorMsg.innerHTML = "Password should be at least 6 characters"
-                    loginErrorMsg.style.opacity = 1
-                }*/
+                }
             })
-        /*
-            const existingUser = await checkSignIn(username.toLowerCase(), password)
-        if (
-            existingUser
-        ) {
-            console.log("You have successfully logged in.");
-            loginForm.reset()
-            
-            logged = true;
-            
-            loginErrorMsg.style.opacity = 0;
-            goBack()
-        }*/
     }
   });
 
   const unsubAuth = onAuthStateChanged(auth, async (user) => {
-    console.log('user status changed:', user)
-    // Get the currently signed-in user
-    const user1 = auth.currentUser;
+    //console.log('user status changed:', user)
 
-    if (user1) {
-    // User is signed in
-    const displayName = user.displayName;
-
-    if (displayName) {
-        console.log("User's display name:", displayName);
-    } else {
-        console.log("User does not have a display name.");
-    }
-    } else {
-    // No user is signed in
-    console.log("No user is signed in.");
-    }
-    if (user !== null) {
-        document.querySelector("#logIn-1").style.display = 'none'
-        document.querySelector("#logIn-2").style.display = 'none'
-        document.querySelector("#logOut-1").style.display = ''
-        document.querySelector("#logOut-2").style.display = ''
-        navigationVue.logged = true
-        navigationVue2.logged = true
-    } else {
-        document.querySelector("#logIn-1").style.display = ''
-        document.querySelector("#logIn-2").style.display = ''
-        document.querySelector("#logOut-1").style.display = 'none'
-        document.querySelector("#logOut-2").style.display = 'none'
-        navigationVue.logged = false
-        navigationVue2.logged = false
-    }
     homeVue.display = true
 	aboutVue.display = false
 	coursesVue.display = false
@@ -335,36 +238,21 @@ loginButton.addEventListener("click", async (e) => {
     adminVue.display = false
     updatesVue.display = false
     if (user !== null && user.emailVerified) {
-        const varified = await checkUsername(user.email)
-        if (!varified) {
-            addDoc(colRef, {
+        //console.log(user.email)
+        const verified = await checkUsername(user.email)
+        var r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'));
+        if (!verified) {
+            addDoc(msgRef, {
                 email: user.email,
-                access: "default",
-                createdAt: serverTimestamp()
+                class: "bot-message",
+                body: `Welcome ${currentUser.firstname}`,
+                accountName: currentUser.firstname,
+                createdAt: serverTimestamp(),
+                createdBy: 'Admin',
+                createdByName: 'Admin'
             })
             .then(() => {
-                console.log("Verified user successfully.");
-            })
-        } else {
-            const q = query(colRef, where("email", "==", user.email))
-            var r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'));
-            const unsubCol = onSnapshot(q, (snapshot) => {
-                let users = []
-                snapshot.docs.forEach((doc) => {
-                  users.push({ ...doc.data(), id:doc.id })
-                })
-                console.log(users)
-                currentUser = users[0]
-                if (users[0].access == 'admin') {
-                    r = query(msgRef, orderBy('createdAt'))
-                    console.log('Administrator')
-                    navigationVue.admin = true
-                    navigationVue2.admin = true
-                } else {
-                    r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'))
-                    navigationVue.admin = false
-                    navigationVue2.admin = false
-                }
+                //console.log("Verified user successfully.");
             })
             const unsubMsg = onSnapshot(r, (snapshot) => {
                 let messages = []
@@ -375,9 +263,64 @@ loginButton.addEventListener("click", async (e) => {
                     ...element,
                     time: element.createdAt ? convertTimestampToUserFriendlyFormat(element.createdAt.toDate()) : getCurrentTime(new Date()),
                 }));
-                console.log(messages)
+                //console.log(messages)
+            })
+        } else {
+            const q = query(colRef, where("email", "==", user.email))
+            const unsubCol = onSnapshot(q, (snapshot) => {
+                let users = []
+                snapshot.docs.forEach((doc) => {
+                  users.push({ ...doc.data(), id:doc.id })
+                })
+                //console.log(users)
+                currentUser = users[0]
+                if (users[0].access == 'admin') {
+                    r = query(msgRef, orderBy('createdAt'))
+                    //console.log('Administrator')
+                    navigationVue.admin = true
+                    navigationVue2.admin = true
+                } else {
+                    r = query(msgRef, where("email", "==", user.email), orderBy('createdAt'));
+                    navigationVue.admin = false
+                    navigationVue2.admin = false
+                }
+                const unsubMsg = onSnapshot(r, (snapshot) => {
+                    let messages = []
+                    snapshot.docs.forEach((doc) => {
+                        messages.push({ ...doc.data(), id:doc.id })
+                    })
+                    updatesVue.messages = messages.map((element) => ({
+                        ...element,
+                        time: element.createdAt ? convertTimestampToUserFriendlyFormat(element.createdAt.toDate()) : getCurrentTime(new Date()),
+                    }));
+                    //console.log(messages)
+                })
             })
         }
+        
+        document.querySelector("#logIn-1").style.display = 'none'
+        document.querySelector("#logIn-2").style.display = 'none'
+        document.querySelector("#logOut-1").style.display = ''
+        document.querySelector("#logOut-2").style.display = ''
+        document.querySelector('.bgimg-3').style.display = "none";
+        navigationVue.logged = true
+        navigationVue2.logged = true
+    } else if (user !== null) {
+        document.querySelector("#logIn-1").style.display = 'none'
+        document.querySelector("#logIn-2").style.display = 'none'
+        document.querySelector("#logOut-1").style.display = ''
+        document.querySelector("#logOut-2").style.display = ''
+        document.querySelector('.bgimg-3').style.display = "none";
+        navigationVue.logged = true
+        navigationVue2.logged = true
+        updatesVue.messages[0] = {class:"bot-message", body:"Please verify your email account to continue."}
+    } else {
+        document.querySelector("#logIn-1").style.display = ''
+        document.querySelector("#logIn-2").style.display = ''
+        document.querySelector("#logOut-1").style.display = 'none'
+        document.querySelector("#logOut-2").style.display = 'none'
+        navigationVue.logged = false
+        navigationVue2.logged = false
     }
   })
 
