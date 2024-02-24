@@ -408,22 +408,44 @@ processQA()
 
 document.querySelector('#updates').innerHTML = `<template>
 <div v-if="display == true" style="margin-top: 84px;display:flex">
-  <div style="width:30%; height:90vh;overflow-Y:auto">
+  <div v-if="allUsers().length > 1" style="width:30%; height:90vh;overflow-Y:auto">
     <div v-for="(user, count) in allUsers()" class="chat-container user" @click="selectMessage(count, user, $event.target)" style="cursor:pointer">
       <h3 style="padding-left:10px;margin:0">{{ admin() ? user.accountName : 'Admin' }}<span><strong style="color:red;"> {{ newMessagesCount(allUsers()[count]) !== 0 ? '(' + newMessagesCount(allUsers()[count]) + ')' : '' }}</strong></span></h3>
       <p style="padding-left:10px;margin:0">{{ messages.filter(elem=>elem.email == user.email).slice(-1)[0].body }}</p>
     </div>
   </div>
-  <div style="width:65%">
+  <div v-if="allUsers().length > 1" style="width:65%">
     <div class="chat-container">
       <div class="chat-messages">
           <div v-for="(message, count) in messages.filter(elem=>elem.email == allUsers()[currentMessage].email)" class="message-container">
-              <div :class="message.class">{{ message.body }}<div class="w3-small">{{ getCurrentTime(message.time) }}</div></div>
+              <div :class="message.class">{{ message.body }}<!--div class="w3-small">{{ getCurrentTime(message.time) }}</div--></div>
           </div>
       </div>
       <div class="user-input"><textarea class="messageInput" style="height: 45px;"></textarea> <button 
         @click="sendMessage(allUsers()[currentMessage], $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
         class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div v-if="allUsers().length == 1" style="width:95%">
+    <div class="chat-container">
+      <div class="chat-messages">
+          <div v-for="(message, count) in messages.filter(elem=>elem.email == allUsers()[currentMessage].email)" class="message-container">
+              <div :class="message.class">{{ message.body }}<!--div class="w3-small">{{ getCurrentTime(message.time) }}</div--></div>
+          </div>
+      </div>
+      <div class="user-input"><textarea @click="clearNewMessage()" class="messageInput" style="height: 45px;"></textarea> <button 
+        @click="sendMessage(allUsers()[currentMessage], $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
+        class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div v-if="allUsers().length == 0" style="width:95%">
+    <div class="chat-container">
+      <div class="chat-messages">
+          <div v-for="(message, count) in messages" class="message-container">
+              <div :class="message.class">{{ message.body }}<!--div class="w3-small">{{ getCurrentTime(message.time) }}</div--></div>
+          </div>
       </div>
     </div>
   </div>
@@ -483,9 +505,19 @@ function processUpdates() {
             var timeString = hours + ':' + minutes + ' ' + ampm;
             return timeString;
           },
+          clearNewMessage() {
+            if (newMessages.length !== 0 && updatesVue.allUsers().length == 1) {
+              document.querySelector('#updateCount-1').innerHTML = ``
+              document.querySelector('#updateCount-2').innerHTML = ``
+              newMessages.length = 0
+            }
+          },
           sendMessage(user, event) {
-            //console.log(event.parentNode)
-            //console.log(event.parentNode.querySelector("textarea").value)
+            if (newMessages.length !== 0 && updatesVue.allUsers().length == 1) {
+              document.querySelector('#updateCount-1').innerHTML = ``
+              document.querySelector('#updateCount-2').innerHTML = ``
+              newMessages.length = 0
+            }
             currentMessage = {
               "email": user.email,
               "firstname": user.accountName,
@@ -747,5 +779,18 @@ async function gotoView(button) {
     document.querySelector('.bgimg-1').style.display = 'none'
     document.querySelector('.bgimg-3').style.display = 'none'
   }
+  if (button == 'updatesVue' && updatesVue.allUsers().length == 1) {
+    document.querySelector('#updateCount-1').innerHTML = ``
+    document.querySelector('#updateCount-2').innerHTML = ``
+    newMessages.length = 0
+  }
   window[`${button}`].display = true
+  await shortWait()
+  if (button == 'updatesVue' && updatesVue.allUsers().length > 1) {
+    document.querySelectorAll('.user')[updatesVue.currentMessage].classList.add('selected')
+  }
+}
+
+async function shortWait() {
+  await new Promise((e) => setTimeout(e, 50));
 }
