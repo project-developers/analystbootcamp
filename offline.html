@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Analysts Bootcamp</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="icon" type="image/png" href="favicon.ico">
+
+<meta name="description" content="This app provides information for the Analysts Bootcamp.">
+<meta name="author" content="Project Developers">
+<meta name="theme-color" content="#c6aea5bf">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" /> 
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="apple-touch-icon" href="icons/icon-152.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="manifest" href="analystsbootcamp.webmanifest">
+
+
+
+<link rel="stylesheet" href="css/style.css">
+<script src="js/vue.js"></script>
+<script type='module' src="pwabuilder-sw-register.js"></script>
+<script type='module' src="pwabuilder-sw.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QQL8SFSQFK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-QQL8SFSQFK');
+</script>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top w3-white" id="navigation">
+      
+</div>
+
+<!-- Sidebar on small screens when clicking the menu icon -->
+<nav class="w3-sidebar w3-bar-block w3-light w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+
+</nav>
+
+<!-- Header with full-height image -->
+<header class="bgimg-1 w3-display-container main" id="home">
+  
+</header>
+
+<!-- Work Section -->
+<div class="bgimg-3 main" id="admin" style="display:none">
+    
+</div>
+
+<header class="bgimg-2 w3-display-container w3-grayscale-min signIn" id="loginPage" style="display: none;">
+            
+  
+  <div class="w3-container w3-light-grey" id="main-holder" style="padding:36px;">
+    <h3 class="w3-left" style="padding-right:10px;padding-top:50px" id="loginTitle">LOGIN</h3>
+      <div id="login-error-msg-holder"  style="padding-top:50px">
+          <p id="login-error-msg"> Invalid username <span id="error-msg-second-line">and/or password</span></p>
+      </div>
+      <div>
+          <form id="login-form" style="max-width:25rem">
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="First Name" required="" name="firstname">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="Last Name" required="" name="lastname">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="text" placeholder="Other Names" required="" name="othernames">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="email" placeholder="Email" required="" name="username">
+            </p>
+            <p><input class="w3-input w3-border w3-white" type="password" placeholder="Password" required=""
+                      name="password"></p>
+            <p><input class="w3-input w3-border w3-white" type="password" placeholder="Confirm Password" required=""
+                      name="confirmPassword"></p>
+            <p>
+                <button class="w3-button w3-brown" type="submit" id="login-form-submit">
+                    <i class="fa fa-sign-in"></i> LOGIN
+                </button>
+            </p>
+              <p style="padding:24px 0;">Don't have an account? <span style="color:#795548;font-weight: 900;cursor: pointer;" id="signUp" onclick="signUp()">Sign Up</span></p>
+              <p style="padding:24px 0; display:none">Already have an account? <span style="color:#795548;font-weight: 900;cursor: pointer;" onclick="goBack()">Login</span></p>
+          </form>
+          
+      </div>
+  </div>
+</header>
+
+<!-- About Section -->
+<div class="w3-container main" id="about">
+  
+</div>
+
+<!-- Work Section -->
+<div class="w3-container main" id="courses">
+    
+</div>
+  
+  <!-- Modal for full size images on click-->
+  <div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+    <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright" title="Close Modal Image">×</span>
+    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+      <img id="img01" class="w3-image">
+      <p id="caption" class="w3-opacity w3-large"></p>
+    </div>
+  </div>
+
+<!-- Pricing Section -->
+<div class="w3-container w3-dark-grey main" id="qa">
+</div>
+
+<!-- Work Section -->
+<div class="w3-container main" id="updates">
+    
+</div>
+<button id="sendButton" class="w3-button w3-black" style="border-radius: 10px; display:none"><i class="fa fa-paper-plane"></i></button>
+
+
+  <script src="js/app.js"></script>
+  <script type="module" src="js/script.js"></script>
+
+</body>
+</html>
