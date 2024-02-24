@@ -1,0 +1,21 @@
+{
+    "name": "Analysts Bootcamp",
+    "short_name": "Analysts Bootcamp",
+    "description": "This app provides information for the Analysts Bootcamp.",
+    "icons": [
+        {
+            "src": "icons/icon-152.png",
+            "sizes": "168x168",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "https://project-developers.github.io/analystbootcamp/",
+    "display": "standalone",
+    "theme_color": "#c6aea5bf",
+    "background_color": "#c6aea5bf"
+}
