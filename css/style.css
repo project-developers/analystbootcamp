@@ -95,7 +95,7 @@ body, html {
 }
 
 .outer-container {
-  padding: 300px;
+  padding: 200px;
   /*border: 1px solid #cc1c1c;*/
   display: flex;
   align-items: center;
