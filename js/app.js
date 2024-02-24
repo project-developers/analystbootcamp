@@ -447,6 +447,10 @@ document.querySelector('#updates').innerHTML = `<template>
               <div :class="message.class">{{ message.body }}<!--div class="w3-small">{{ getCurrentTime(message.time) }}</div--></div>
           </div>
       </div>
+      <div class="user-input"><textarea @click="clearNewMessage()" class="messageInput" style="height: 45px;"></textarea> <button 
+        @click="sendMessage(allUsers()[currentMessage], $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
+        class="fa fa-paper-plane"></i></button>
+      </div>
     </div>
   </div>
 </div>
@@ -582,7 +586,7 @@ function processAdmin() {
           slides: [
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">THE BOOT CAMP on Mentorship</span><br>
             <span class="w3-xxlarge w3-hide-small">To Attain GLOBAL Certifications</span><br>
-            <span class="w3-xlarge w3-hide-small"> - A New Vista & Gateway to  International job Mobility</span>`},
+            <span class="w3-xlarge w3-hide-small" style="font-weight:700"> - A New Vista & Gateway to  International job Mobility</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
