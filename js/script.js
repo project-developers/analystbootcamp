@@ -22,13 +22,13 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAH4KK0hIftsJZkMR1Hx6swzLmBCl42obM",
-  authDomain: "analystbootcamp-e3060.firebaseapp.com",
-  projectId: "analystbootcamp-e3060",
-  storageBucket: "analystbootcamp-e3060.appspot.com",
-  messagingSenderId: "810457809555",
-  appId: "1:810457809555:web:7d97c7dd08caad99bdc366",
-  measurementId: "G-7EJ0XCDT0S"
+    apiKey: "AIzaSyDb1EoYGjAwshrZx_Egqn7yCKyMBCgqZJo",
+    authDomain: "analystsbootcamp.firebaseapp.com",
+    projectId: "analystsbootcamp",
+    storageBucket: "analystsbootcamp.appspot.com",
+    messagingSenderId: "640983431626",
+    appId: "1:640983431626:web:577922ba57b170829a7733",
+    measurementId: "G-QQL8SFSQFK"
 };
 
 
@@ -289,10 +289,35 @@ loginButton.addEventListener("click", async (e) => {
                     snapshot.docs.forEach((doc) => {
                         messages.push({ ...doc.data(), id:doc.id })
                     })
+                    if (updatesVue.messages.length !== 0) {
+                        var messageChanges = messages.filter((elem) => {
+                            return updatesVue.messages.findIndex(ele=>ele.email === elem.email && ele.firstname === elem.firstname && ele.body === elem.body) == -1
+                        })
+                        var found = messageChanges.findIndex(elem=>currentMessage.email == elem.email && currentMessage.firstname == elem.createdByName && currentMessage.body == elem.body)
+                        //console.log(found, messageChanges,currentMessage)
+                        if (found !== -1) {
+                            messageChanges.splice(found, 1)
+                            newMessages = newMessages.concat(messageChanges)
+                        } else {
+                            newMessages = newMessages.concat(messageChanges)
+                        }
+                        if (newMessages.length !== 0) {
+                            document.querySelector('#updateCount-1').innerHTML = `<strong style="color:red;"> (${newMessages.length})</strong>`
+                            document.querySelector('#updateCount-2').innerHTML = `<strong style="color:red;"> (${newMessages.length})</strong>`
+                        } else {
+                            document.querySelector('#updateCount-1').innerHTML = ``
+                            document.querySelector('#updateCount-2').innerHTML = ``
+                        }
+                    }
                     updatesVue.messages = messages.map((element) => ({
                         ...element,
-                        time: element.createdAt ? convertTimestampToUserFriendlyFormat(element.createdAt.toDate()) : getCurrentTime(new Date()),
+                        time: element.createdAt ? convertTimestampToUserFriendlyFormat(element.createdAt) : getCurrentTime(new Date()),
                     }));
+                    
+                    //console.log(messages)
+                    updatesVue.sortMessages = [].concat(messages)
+                    updatesVue.sortMessages.sort(sortByDateReverse)
+                    
                     //console.log(messages)
                 })
             })
@@ -324,26 +349,28 @@ loginButton.addEventListener("click", async (e) => {
     }
   })
 
-  function convertTimestampToUserFriendlyFormat(timestamp) {
+function convertTimestampToUserFriendlyFormat(timestamp) {
     // Check if the timestamp is valid
-    if (!timestamp || !(timestamp instanceof Date)) {
+    if (!timestamp || !timestamp.toDate || typeof timestamp.toDate !== 'function') {
       return "Invalid timestamp";
     }
   
-    // Format the date as a string, e.g., using toLocaleString()
-    const formattedDate = timestamp.toLocaleString();
+    // Convert Firestore Timestamp to JavaScript Date
+    const dateObject = timestamp.toDate();
   
-    return getCurrentTime(formattedDate);
-  }
+    // Format the date as a string, e.g., using toLocaleString()
+    const formattedDate = dateObject.toLocaleString();
+  
+    return formattedDate;
+}
 
-  function getCurrentTime(date) {
-    var now = new Date(date);
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var timeString = hours + ':' + minutes + ' ' + ampm;
-    return timeString;
-  }
+// Function to sort by date in reverse order
+function sortByDateReverse(a, b) {
+    if (a.createdAt == null || b.createdAt == null) {
+        return 0
+    } else {
+        return Number(b.createdAt.seconds.toString() + b.createdAt.nanoseconds.toString()) - Number(a.createdAt.seconds.toString() + a.createdAt.nanoseconds.toString());
+    }
+    
+}
+
