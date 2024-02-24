@@ -95,7 +95,7 @@ body, html {
 }
 
 .outer-container {
-  padding: 200px;
+  padding: 180px;
   /*border: 1px solid #cc1c1c;*/
   display: flex;
   align-items: center;
@@ -116,4 +116,8 @@ body, html {
   color: #fff;
   /*padding: 20px;*/
   display: inline-block;
+}
+
+.selected {
+  background-color: rgba(228, 211, 188, 0.87);
 }
