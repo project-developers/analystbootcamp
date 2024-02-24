@@ -529,17 +529,10 @@ function processAdmin() {
             </ul>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
             <ul>
-              <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
-              </li>
-            </ul>`},
-            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Direction of traffic:</span><br>
-            <ul>
-              <li class="w3-xxlarge">Upgrade <em>no matter our educational level.</em>
-                <ul>
-                  <li>Leverage on soft skills</li>
-                  <li class="w3-xxlarge">Right Instructors that will teach you from <strong>Newbie</strong> to <strong>Pro</strong></li>
-                  <li class="w3-xxlarge">Right Resources</li>
-                  <li class="w3-xxlarge">Firm Commitment</li>
+                <li class="w3-xxlarge">Leverage on soft skills, <em>no matter our educational level.</em><ul>
+                <li class="w3-xxlarge">Right Instructors that will teach you from <strong>Newbie</strong> to <strong>Pro</strong></li>
+                <li class="w3-xxlarge">Right Resources</li>
+                <li class="w3-xxlarge">Firm Commitment</li>
                 </ul>
               </li>
             </ul>`},
@@ -564,8 +557,7 @@ function processAdmin() {
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Can I become a business analyst with no experience?</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge">When preparing your CV, include transferable skills. Even if you don't have direct experience in business analysis, you likely have transferable skills that can be applied to the role. Keywords like problem-solving, project management, and communication are all valuable skills for a business analyst.</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">What then, is needed?</span>`},
-            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">What then, is needed?</span><br>
-            <ul>
+            {"style": "background-position: 200% 100%", "content":`<ul>
               <li class="w3-xxlarge">Mentoring <span> - that's what you've started having at the moment.</span>
                 <ul>
                   <li>Telling you what is happening at the moment</li>
@@ -621,17 +613,17 @@ function processAdmin() {
               <li class="w3-xxlarge">Start applying for jobs globally</li>
             </ul>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">This entire Package will go for ??</span>`},
-            {"style": "background-position: 200% 100%", "content":`<h1 style="font-size:196px">Thank you!</h1>`},
-            {"style": "background: #fff", "content":`<div style="font-size:64px; margin-bottom:100px">For further details, please click the link on the chat. Then follow the steps below:</div>
-            <div style="font-size:32px;font-weight:700">
+            {"style": "background: #fff", "content":`<div style="font-size:64px; margin-bottom:50px">If you are interested, please kindly send an email to: analystbcamp@gmail.com</div>
+            <!--div style="font-size:24px;font-weight:700">
               <ol>
-                <li>Go to Menu (On mobile device), click LOGIN > then Sign Up to Create an account</li>
+                <li>Go to Menu (On mobile device) OR click LOGIN > then Sign Up to Create an account</li>
                 <li>Verify email by checking for link in your Inbox, Spam or Junk</li>
                 <li>Click link</li>
                 <li>Refresh the page</li>
                 <li>Click UPDATES and send your message.</li>
               <ol>
-            </div>`},
+            </div-->`},
+            {"style": "background-position: 200% 100%", "content":`<h1 style="font-size:128px">Thank you!</h1>`},
         ],
           slideCount: 0,
         },
