@@ -16,6 +16,6 @@
     ],
     "start_url": "https://project-developers.github.io/analystbootcamp/",
     "display": "standalone",
-    "theme_color": "#c6aea5bf",
-    "background_color": "#c6aea5bf"
+    "theme_color": "#c6aea5",
+    "background_color": "#c6aea5"
 }
