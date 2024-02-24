@@ -76,7 +76,7 @@ loginErrorMsg.style.opacity = 0;
 
 var logged = false
 var currentUser = undefined
-var currentMessage = undefined
+var currentMessage = {}
 
 var navigationVue, navigationVue2, homeVue, aboutVue, coursesVue, qaVue, updatesVue, adminVue;
 
@@ -100,7 +100,7 @@ document.querySelector('#navigation').innerHTML = `<template>
         <a @click="openButton('ABOUT')" class="w3-bar-item w3-button">ABOUT</a>
         <a @click="openButton('COURSES')" class="w3-bar-item w3-button"><i class="fa fa-th"></i> COURSES</a>
         <a @click="openButton('QA')" class="w3-bar-item w3-button"><i class="fa fa-question"></i> Q&A</a>
-        <a v-if="logged == true" @click="openButton('UPDATES')" class="w3-bar-item w3-button"><i class="fa fa-info-circle"></i> UPDATES</a>
+        <a v-if="logged == true" @click="openButton('UPDATES')" class="w3-bar-item w3-button"><i class="fa fa-info-circle"></i> UPDATES<span id="updateCount-1"></span></a>
         <a v-if="admin == true" @click="openButton('ADMIN')" class="w3-bar-item w3-button"><i class="fa fa-user"></i> ADMIN</a>
         <a href="javascript:void(0)" id="logIn-1" onclick="signIn()" class="w3-bar-item w3-button"><i class="fa fa-sign-in"></i> LOGIN</a>
         <a href="javascript:void(0)" id="logOut-1" class="w3-bar-item w3-button" style="display:none"><i class="fa fa-sign-out"></i> SIGN OUT</a>
@@ -153,7 +153,7 @@ document.querySelector('#mySidebar').innerHTML = `<template>
   <a @click="openButton('ABOUT')" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
   <a @click="openButton('COURSES')" onclick="w3_close()" class="w3-bar-item w3-button">COURSES</a>
   <a @click="openButton('QA')" onclick="w3_close()" class="w3-bar-item w3-button">Q&A</a>
-  <a v-if="logged == true" @click="openButton('UPDATES')" onclick="w3_close()" class="w3-bar-item w3-button">UPDATES</a>
+  <a v-if="logged == true" @click="openButton('UPDATES')" onclick="w3_close()" class="w3-bar-item w3-button">UPDATES<span id="updateCount-2"></span></a>
   <a v-if="admin == true" @click="openButton('ADMIN')" onclick="w3_close()" class="w3-bar-item w3-button">ADMIN</a>
   <a href="javascript:void(0)" id="logIn-2" onclick="signIn()" class="w3-bar-item w3-button">LOGIN</a>
   <a href="javascript:void(0)" id="logOut-2" class="w3-bar-item w3-button" style="display:none">SIGN OUT</a>
@@ -407,17 +407,24 @@ function processQA() {
 processQA()
 
 document.querySelector('#updates').innerHTML = `<template>
-<div v-if="display == true">
-  <div v-for="(user,count) in allUsers()" class="chat-container" style="margin-top: 84px;">
-    <h3 v-if="allUsers().length !== 1" style="padding-left:20px">{{ user.accountName }}</h3>
-    <div class="chat-messages">
-        <div v-for="(message, count) in messages.filter(elem=>elem.email == user.email)" class="message-container">
-            <div :class="message.class">{{ message.body }}</div>
-        </div>
+<div v-if="display == true" style="margin-top: 84px;display:flex">
+  <div style="width:30%; height:90vh;overflow-Y:auto">
+    <div v-for="(user, count) in allUsers()" class="chat-container user" @click="selectMessage(count, user, $event.target)" style="cursor:pointer">
+      <h3 style="padding-left:10px;margin:0">{{ admin() ? user.accountName : 'Admin' }}<span><strong style="color:red;"> {{ newMessagesCount(allUsers()[count]) !== 0 ? '(' + newMessagesCount(allUsers()[count]) + ')' : '' }}</strong></span></h3>
+      <p style="padding-left:10px;margin:0">{{ messages.filter(elem=>elem.email == user.email).slice(-1)[0].body }}</p>
     </div>
-    <div class="user-input"><textarea class="messageInput" style="height: 45px;"></textarea> <button 
-      @click="sendMessage(user, $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
-      class="fa fa-paper-plane"></i></button>
+  </div>
+  <div style="width:65%">
+    <div class="chat-container">
+      <div class="chat-messages">
+          <div v-for="(message, count) in messages.filter(elem=>elem.email == allUsers()[currentMessage].email)" class="message-container">
+              <div :class="message.class">{{ message.body }}<div class="w3-small">{{ getCurrentTime(message.time) }}</div></div>
+          </div>
+      </div>
+      <div class="user-input"><textarea class="messageInput" style="height: 45px;"></textarea> <button 
+        @click="sendMessage(allUsers()[currentMessage], $event.target.parentNode)" class="w3-button w3-black" style="border-radius: 10px;"><i 
+        class="fa fa-paper-plane"></i></button>
+      </div>
     </div>
   </div>
 </div>
@@ -430,16 +437,51 @@ function processUpdates() {
         data: {
           display: false,
           messages: [],
+          sortMessages: [],
+          currentMessage: 0,
         },
         computed: {
           
         },
         methods: {
+          newMessagesCount(user) {
+            return newMessages.filter(elem=>user.email == elem.email && user.accountName == elem.accountName).length
+          },
+          selectMessage(count, user) {
+            const prepareNewMessage = newMessages.filter(elem=>user.email !== elem.email && user.accountName !== elem.accountName)
+            newMessages = [].concat(prepareNewMessage)
+            if (document.querySelector('.selected')) {
+              document.querySelector('.selected').classList.remove('selected')
+            }
+            document.querySelectorAll('.user')[count].classList.add('selected')
+            this.currentMessage = count
+            if (newMessages.length !== 0) {
+                document.querySelector('#updateCount-1').innerHTML = `<strong style="color:red;"> (${newMessages.length})</strong>`
+                document.querySelector('#updateCount-2').innerHTML = `<strong style="color:red;"> (${newMessages.length})</strong>`
+            } else {
+              document.querySelector('#updateCount-1').innerHTML = ``
+              document.querySelector('#updateCount-2').innerHTML = ``
+            }
+          },
           allUsers() {
-            return getUniqueElementsByProperty(this.messages, ['email'])
+            return getUniqueElementsByProperty(this.sortMessages, ['email'])
           },
           mode() {
             return 'w3-bar-item w3-button ' + mode.replace('w3-card ','')
+          },
+          admin() {
+            return navigationVue.admin
+          },
+          getCurrentTime(date) {
+            var now = new Date(date);
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var timeString = hours + ':' + minutes + ' ' + ampm;
+            return timeString;
           },
           sendMessage(user, event) {
             //console.log(event.parentNode)
@@ -454,6 +496,8 @@ function processUpdates() {
         }
     })
 }
+
+var newMessages = [];
 
 function getUniqueElementsByProperty(arr, propNames) {
   const uniqueSet = new Set();
@@ -504,6 +548,9 @@ function processAdmin() {
         data: {
           display: false,
           slides: [
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">THE BOOT CAMP on Mentorship</span><br>
+            <span class="w3-xxlarge w3-hide-small">To Attain GLOBAL Certifications</span><br>
+            <span class="w3-xlarge w3-hide-small"> - A New Vista & Gateway to  International job Mobility</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Today's Reality:</span><br>
             <ul>
@@ -607,6 +654,7 @@ function processAdmin() {
               </li>
             </ul>
             <span class="w3-xxlarge w3-hide-small"><strong>Please note, this could be achieved in less than 12 months from tonight.</strong></span>`},
+            {"style": "background-position: 200% 100%", "content":`<span class="w3-xxlarge w3-hide-small">The courses to be covered are the basic foundation upon which, each candidate could top up at their own time and pace.</span>`},
             {"style": "background-position: 200% 100%", "content":`<span class="w3-jumbo w3-hide-small">Next</span><br>
             <ul>
               <li class="w3-xxlarge">Prepare your CV</li>
